@@ -105,9 +105,34 @@ local packages = function(opts)
   }:find()
 end
 
+local pkg_root = function(opts)
+  local has_lsp_util, lsputil = pcall(require, 'lspconfig.util')
+  if not has_lsp_util then
+    error('This function requires neovim/nvim-lspconfig')
+  end
+  local ros_pattern = require('lspconfig.util').root_pattern("package.xml")
+  opts = opts or {}
+  opts.cwd = ros_pattern(vim.fn.bufname())
+  return opts
+end
+
+local files = function(opts)
+  require'telescope.builtin'.find_files(pkg_root(opts))
+end
+
+local grep_string = function(opts)
+  require'telescope.builtin'.grep_string(pkg_root(opts))
+end
+
+local live_grep = function(opts)
+  require'telescope.builtin'.live_grep(pkg_root(opts))
+end
 
 return telescope.register_extension {
   exports = {
-    packages = packages
+    packages = packages,
+    files = files,
+    grep_string = grep_string,
+    live_grep = live_grep,
   }
 }

@@ -46,3 +46,10 @@ nnoremap <silent> <leader>dr :lua require'telescope'.extensions.ros.packages{cwd
 :lua require'telescope'.extensions.ros.packages{cwd=os.getenv("ROS_WORKSPACE") or "."}
 
 ```
+
+## Convenience pickers
+These require `neovim/nvim-lspconfig` for root pattern detection
+
+- `files` runs a `find_files` in the package root of the file in the current buffer
+- `grep_string` runs a `grep_string` in the package root of the file in the current buffer
+- `live_grep` runs a `live_grep` in the package root of the file in the current buffer
