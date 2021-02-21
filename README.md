@@ -2,6 +2,8 @@
 
 ROS(2) package selector for [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) using colcon.
 
+![Previe image](preview.gif)
+
 The picker lets you select a ros package from your workspace and then subsequently starts a `find_file` operation in that package, somewhat similar to how `colcon edit` and `rosed` are used.
 
 ## Installation
