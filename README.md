@@ -17,7 +17,7 @@ Plug 'nvim-lua/plenary.nvim'
 " Telescope
 Plug 'nvim-telescope/telescope.nvim'
 " This plugin
-Plug 'ipa-fez/telescope-ros.nvim'
+Plug 'bi0ha2ard/telescope-ros.nvim'
 ```
 
 After the telescope setup, load the plugin with
