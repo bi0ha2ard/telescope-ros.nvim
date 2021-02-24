@@ -94,7 +94,7 @@ local packages = function(opts)
     sorter = conf.generic_sorter(opts),
     previewer = conf.file_previewer(opts),
     attach_mappings = function(prompt_bufnr)
-      actions.goto_file_selection_edit:replace(function()
+      actions.select_default:replace(function()
         local selection = actions.get_selected_entry()
         do_close(prompt_bufnr, true)
         require'telescope.builtin'.find_files{cwd=selection.filename}
