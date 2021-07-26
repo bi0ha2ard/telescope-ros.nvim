@@ -9,7 +9,7 @@ local pickers = require('telescope.pickers')
 local utils = require('telescope.utils')
 local entry_display = require('telescope.pickers.entry_display')
 local state = require('telescope.state')
-local tp = require('telescope.path')
+local Path = require('plenary.path')
 
 local conf = require('telescope.config').values
 
@@ -24,12 +24,12 @@ local make_displayer = function(opts)
   }
 
   local make_display = function(entry)
-    local display_path = entry.filename
+    local display_path = Path:new(entry.filename)
     if opts['cwd'] then
-      display_path = tp.make_relative(display_path, opts['cwd'])
+      display_path = display_path:make_relative(opts['cwd'])
     end
     if opts.shorten_path then
-      display_path = tp.shorten(display_path)
+      display_path = display_path:shorten()
     end
 
     return displayer {
@@ -44,7 +44,7 @@ local make_displayer = function(opts)
     return {
       ordinal = pkgname,
       -- Path to package.xml for file preview
-      path = path .. tp.separator .. "package.xml",
+      path = Path:new(path, "package.xml"):absolute(),
       value = pkgname,
       -- Path to the package root
       filename = path,
