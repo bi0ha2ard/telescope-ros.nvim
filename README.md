@@ -12,7 +12,6 @@ Install the plugin and requirements
 
 ```
 " Telescope requirements
-Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 " Telescope
 Plug 'nvim-telescope/telescope.nvim'
