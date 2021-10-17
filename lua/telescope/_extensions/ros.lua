@@ -13,6 +13,9 @@ local Path = require('plenary.path')
 
 local conf = require('telescope.config').values
 
+local health_ok = vim.fn["health#report_ok"]
+local health_error = vim.fn["health#report_error"]
+
 local make_displayer = function(opts)
   local displayer = entry_display.create {
     separator = " ",
@@ -128,11 +131,20 @@ local live_grep = function(opts)
   require'telescope.builtin'.live_grep(pkg_root(opts))
 end
 
+local health = function()
+  if vim.fn.executable("colcon") == 1 then
+    health_ok "colcon found"
+  else
+    health_error "colcon executable missing."
+  end
+end
+
 return telescope.register_extension {
   exports = {
     packages = packages,
     files = files,
     grep_string = grep_string,
     live_grep = live_grep,
-  }
+  },
+  health = health
 }
