@@ -4,6 +4,7 @@ if not has_telescope then
 end
 
 local actions = require('telescope.actions')
+local action_state = require('telescope.actions.state')
 local finders = require('telescope.finders')
 local pickers = require('telescope.pickers')
 local utils = require('telescope.utils')
@@ -59,7 +60,7 @@ end
 
 -- from actions.lua because we want to stay in insert mode
 local do_close = function(prompt_bufnr, keepinsert)
-  local picker = actions.get_current_picker(prompt_bufnr)
+  local picker = action_state.get_current_picker(prompt_bufnr)
   local prompt_win = state.get_status(prompt_bufnr).prompt_win
   local original_win_id = picker.original_win_id
 
@@ -98,7 +99,7 @@ local packages = function(opts)
     previewer = conf.file_previewer(opts),
     attach_mappings = function(prompt_bufnr)
       actions.select_default:replace(function()
-        local selection = actions.get_selected_entry()
+        local selection = action_state.get_selected_entry()
         do_close(prompt_bufnr, true)
         require'telescope.builtin'.find_files{cwd=selection.filename}
       end)
