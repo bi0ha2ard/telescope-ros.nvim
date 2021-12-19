@@ -58,27 +58,6 @@ local make_displayer = function(opts)
   end
 end
 
--- from actions.lua because we want to stay in insert mode
-local do_close = function(prompt_bufnr, keepinsert)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local prompt_win = state.get_status(prompt_bufnr).prompt_win
-  local original_win_id = picker.original_win_id
-
-  if picker.previewer then
-    picker.previewer:teardown()
-  end
-
-  actions.close_pum(prompt_bufnr)
-  if not keepinsert then
-    vim.cmd [[stopinsert]]
-  end
-
-  vim.api.nvim_win_close(prompt_win, true)
-
-  pcall(vim.cmd, string.format([[silent bdelete! %s]], prompt_bufnr))
-  pcall(vim.api.nvim_set_current_win, original_win_id)
-end
-
 local packages = function(opts)
   if vim.fn.executable("colcon") ~=  1 then
     print("This plugin rquires colcon to be installed")
@@ -100,8 +79,8 @@ local packages = function(opts)
     attach_mappings = function(prompt_bufnr)
       actions.select_default:replace(function()
         local selection = action_state.get_selected_entry()
-        do_close(prompt_bufnr, true)
-        require'telescope.builtin'.find_files{cwd=selection.filename}
+        actions.close(prompt_bufnr)
+        require'telescope.builtin'.find_files{cwd=selection.filename, initial_mode="insert"}
       end)
 
       return true
