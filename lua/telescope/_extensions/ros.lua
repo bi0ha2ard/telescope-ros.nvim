@@ -4,6 +4,7 @@ if not has_telescope then
 end
 
 local actions = require('telescope.actions')
+local builtin = require('telescope.builtin')
 local action_state = require('telescope.actions.state')
 local finders = require('telescope.finders')
 local pickers = require('telescope.pickers')
@@ -80,7 +81,9 @@ local packages = function(opts)
       actions.select_default:replace(function()
         local selection = action_state.get_selected_entry()
         actions.close(prompt_bufnr)
-        require'telescope.builtin'.find_files{cwd=selection.filename, initial_mode="insert"}
+        vim.schedule(function()
+            builtin.find_files{cwd=selection.filename, initial_mode="insert"}
+        end)
       end)
 
       return true
