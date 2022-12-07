@@ -49,7 +49,7 @@ nnoremap <silent> <leader>dr :lua require'telescope'.extensions.ros.packages{cwd
 ```
 
 ## Convenience pickers
-These require `neovim/nvim-lspconfig` for root pattern detection
+These require a recent Neovim build with `fim.fs` or the `neovim/nvim-lspconfig` plugin for root pattern detection.
 
 - `files` runs a `find_files` in the package root of the file in the current buffer
 - `grep_string` runs a `grep_string` in the package root of the file in the current buffer
