@@ -92,15 +92,44 @@ local packages = function(opts)
 end
 
 local pkg_root = function(opts)
-  local has_lsp_util, lsputil = pcall(require, 'lspconfig.util')
-  if not has_lsp_util then
-    error('This function requires neovim/nvim-lspconfig')
-  end
-  local ros_pattern = require('lspconfig.util').root_pattern("package.xml")
-  opts = opts or {}
-  opts.cwd = ros_pattern(vim.fn.bufname())
-  return opts
+    error('Autodetecting package root not supported. Update to a Neovim build that has vim.fs, or install the lspconfig plugin.')
+    return opts
 end
+
+-- Recent nvim
+if vim.fs then
+  pkg_root = function(opts)
+    opts = opts or {}
+    local search_path = nil
+    local abs_buf = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
+    if abs_buf ~= "." then
+      -- if there's no file, we search with cwd
+      search_path = abs_buf
+    end
+    res = vim.fs.find("package.xml", {upward = true, type = "file", path=search_path})
+    if not vim.tbl_isempty(res) then
+      opts.cwd = vim.fs.dirname(res[1])
+    end
+    return opts
+  end
+-- Fallback to lspconfig, if installed
+else
+  local has_lsp_util, lsputil = pcall(require, 'lspconfig.util')
+  if has_lsp_util then
+    local ros_pattern = lsputil.root_pattern("package.xml")
+    pkg_root = function(opts)
+      local abs_buf = vim.api.nvim_buf_get_name(0)
+      if abs_buf == "" then
+        abs_buf = vim.fn.getcwd()
+      end
+      opts = opts or {}
+      opts.cwd = ros_pattern(abs_buf)
+      return opts
+    end
+  end
+end
+
+
 
 local files = function(opts)
   require'telescope.builtin'.find_files(pkg_root(opts))
