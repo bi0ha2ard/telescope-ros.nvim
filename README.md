@@ -10,6 +10,21 @@ The picker lets you select a ros package from your workspace and then subsequent
 
 Install the plugin and requirements
 
+Using lazy.nvim
+
+```lua
+{ 
+    "nvim-telescope/telescope.nvim",
+
+    dependencies = {
+        "nvim-lua/plenary.nvim",
+        "bi0ha2ard/telescope-ros.nvim"
+    }
+}
+```
+
+Using vim-plug
+
 ```
 " Telescope requirements
 Plug 'nvim-lua/plenary.nvim'
