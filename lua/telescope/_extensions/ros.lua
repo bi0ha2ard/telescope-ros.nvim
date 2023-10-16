@@ -15,8 +15,9 @@ local Path = require('plenary.path')
 
 local conf = require('telescope.config').values
 
-local health_ok = vim.fn["health#report_ok"]
-local health_error = vim.fn["health#report_error"]
+local health = vim.health
+local health_ok = health.ok or vim.fn["health#report_ok"]
+local health_error = health.error or vim.fn["health#report_error"]
 
 local make_displayer = function(opts)
   local displayer = entry_display.create {
@@ -145,9 +146,9 @@ end
 
 local health = function()
   if vim.fn.executable("colcon") == 1 then
-    health_ok "colcon found"
+    health_ok("colcon found")
   else
-    health_error "colcon executable missing."
+    health_error("colcon executable missing.")
   end
 end
 
