@@ -19,6 +19,8 @@ local health = vim.health
 local health_ok = health.ok or vim.fn["health#report_ok"]
 local health_error = health.error or vim.fn["health#report_error"]
 
+local colcon_executable = "colcon"
+
 local make_displayer = function(opts)
   local displayer = entry_display.create {
     separator = " ",
@@ -61,12 +63,12 @@ local make_displayer = function(opts)
 end
 
 local packages = function(opts)
-  if vim.fn.executable("colcon") ~=  1 then
+  if vim.fn.executable(colcon_executable) ~=  1 then
     print("This plugin rquires colcon to be installed")
     return
   end
   local basedir = opts['cwd'] or "."
-  local results = utils.get_os_command_output({ 'colcon', '--log-base', '/dev/null', 'list', '--base-paths', basedir })
+  local results = utils.get_os_command_output({ colcon_executable, '--log-base', '/dev/null', 'list', '--base-paths', basedir })
   if vim.tbl_isempty(results) then
     return
   end
@@ -145,14 +147,17 @@ local live_grep = function(opts)
 end
 
 local health = function()
-  if vim.fn.executable("colcon") == 1 then
-    health_ok("colcon found")
+  if vim.fn.executable(colcon_executable) == 1 then
+    health_ok("colcon executable is `" .. colcon_executable .. "`")
   else
-    health_error("colcon executable missing.")
+    health_error("colcon executable not found. Looking for `" .. colcon_executable .. "`")
   end
 end
 
 return telescope.register_extension {
+  setup = function(config)
+    colcon_executable = config.colcon or colcon_executable
+  end,
   exports = {
     packages = packages,
     files = files,

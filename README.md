@@ -19,10 +19,32 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'bi0ha2ard/telescope-ros.nvim'
 ```
 
+## Telescope setup
+
 After the telescope setup, load the plugin with
+
 ```
 lua require('telescope').load_extension('ros')
 ```
+
+The path to the `colcon` executable can be configured:
+
+```lua
+require('telescope').setup{
+    extensions = {
+        ros = {
+            colcon = "colcon" -- Must be in $PATH
+            -- colcon = vim.loop.os_homedir() .. "/venvs/colcon/bin/colcon", -- or run directly from a venv
+        }
+    }
+}
+```
+
+The default is `colcon`.
+
+The `:checkhealth` command can be used to check whether the executable is found.
+
+At least `colcon-ros` and `colcon-package-information` must be installed to populate the package list.
 
 ## Usage
 
