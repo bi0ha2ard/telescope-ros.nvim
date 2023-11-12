@@ -56,7 +56,7 @@ require('telescope').setup{
 ```
 
 The default is `colcon`.
-[cols](https://github.com/bi0ha2ard/cols) can be used as a drop-in replacement with faster package discovery.
+[cols](https://github.com/bi0ha2ard/cols) can be used as a drop-in replacement for faster package discovery.
 
 The `:checkhealth` command can be used to check whether the executable is found.
 
